@@ -412,14 +412,15 @@ While ($Stoploop -eq $false)
 
 # Setting Access Policy for current users
 $Upn = (Get-AzContext).Account.Id
-$TeamSG = (Get-AzADGroup -DisplayName 'CEC Azure Stack Engineering').Id
+#$TeamSGName =  ''
+#$TeamSG = (Get-AzADGroup -DisplayName $TeamSgName).Id
 [string]$date = (Get-Date)
 $output = " - Setting Azure Key Vault Access Policy"
 $msg = $date + $output
 Write-Output $msg
 
 Set-AzKeyVaultAccessPolicy -VaultName $KeyVaultName -UserPrincipalName $Upn -PermissionsToSecrets get, list, set -PermissionsToCertificates get, list, create, update, getissuers, setissuers, listissuers
-Set-AzKeyVaultAccessPolicy -VaultName $KeyVaultName -ObjectId $TeamSG -PermissionsToSecrets get, list, set -PermissionsToCertificates get, list, create, update, getissuers, setissuers, listissuers
+#Set-AzKeyVaultAccessPolicy -VaultName $KeyVaultName -ObjectId $TeamSG -PermissionsToSecrets get, list, set -PermissionsToCertificates get, list, create, update, getissuers, setissuers, listissuers
 
 # Creating Secrets.
 
@@ -452,3 +453,5 @@ if ($InputResponse -in ('Yes', 'Y', 'y', 'yes')) {
         $output = " - New Azure Key Vault Task - Finished"
         $msg = $date + $output
         write-output $msg
+
+###NEED TO PROMPT FOR CA ISSUER Setup
