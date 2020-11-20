@@ -52,8 +52,10 @@ If the Resource Group Name does not exist.  A new Resource Group will be created
 
 
 .link
-https://docs.microsoft.com/en-us/powershell/scripting/getting-started/getting-started-with-windows-powershell?view=powershell-7
-https://github.com/powershell/powerhsell
+https://docs.microsoft.com/en-us/azure/key-vault/general/overview
+https://docs.microsoft.com/en-us/azure/key-vault/certificates/about-certificates
+https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-pki-certs?view=azs-2008
+https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-validate-registration?view=azs-2008&tabs=az
 #>
 
 param(

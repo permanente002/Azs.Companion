@@ -1,3 +1,86 @@
+<#
+.Synopsis
+    New-AzsE2EDeploymentCertificate.ps1 | This script will create a new Azure Key Vault, Generate Azure stack Deployment Certificates, and  download them to your local machine for deployment.
+
+.Description
+
+     
+
+    Pre Requisites:  
+        Contributor access to the Azure Subscription where you plan to store Certificates and Secrets.
+        Certifate Authority issuer/provider setup to sign your certificates.
+        Latest Azure Stack Readiness checker powershell module installed (optional)
+    
+    This script will will do the following:
+        
+        Create an Azure Key Vault to store Azure Stack Certificates and Secrets.
+        Generate Azure Stack Deployment Certificate policies and submit them to Azure Key Vault for generation.  (If you have a working CA provider is setup a signed certificate will be generated).
+        Download the certificates to your local server
+        Import/Export the certficate with a PFX password.  (By default when you download a certificate from Azure Key Vault there is no password.)
+        Copy the PFX (w/ Password) to the required deployment folder.
+        Prompt you to validate the certificate.  (requires the Azure Stack Readiness checker module to be installed.)
+
+    The script will prompt for login details to the following accounts:
+
+        HLH Account
+        BMC Account
+        Certificate PFX password
+        PEP Azs Domain Account & Credentials
+        OEM VM login details
+    
+
+.Parameter TenantId
+    Provide the Azure Subscription Tenant Id where the Azure Key Vault will be created.
+
+.Parameter SubId
+    Provide the Azure Subscription ID where the Azure Key Vault will be created.
+
+.Parameter IssuerName
+    Provide the Azure Key Vault Issuer Name that will be used to issue the new certificates.
+
+.Parameter RegionName
+    Provide the Azure Stack region name.  If a Region Name and External FQDN are provided.  A unique Key Vault name will be created based on the two joined values. Both a Region Name and External FQDN will need to be provided in order to auto generate a unique name. 
+
+    E.g. "RegionName"  + "External-FQDN.com" will create a Key Vault Name value of "RegionNameExternalFQDN"
+
+.Parameter externalFQDN
+
+Provide the Azure Stack External FQDN.  If a Region Name and External FQDN are provided.  A unique Key Vault name will be created based on the two joined values.  Both a Region Name and External FQDN will need to be provided in order to auto generate a unique name.
+
+    E.g. "RegionName"  + "External-FQDN.com" will create a Key Vault Name value of "RegionNameExternalFQDN"
+
+.Parameter KeyVaultName
+Provide an Azure Key Vault Name if you do not one auto generated based on Region Name and External FQDN.
+
+.Parameter KeyVaultRgName
+Provide the Key Vault Resource Group Name.  
+If an existing Resource Group Name is provided.  The Key Vault will be created in the Resource Group name provided.
+If the Resource Group Name does not exist.  A new Resource Group will be created.
+
+.Parameter AzLocation
+Provide the Azure Location where you want to deploy the new Key Vault.  The default value is 'eastus2' if a value is not provided.
+
+.example 
+
+  
+    
+.example
+
+    
+
+.example
+
+    
+
+
+.link
+https://docs.microsoft.com/en-us/azure/key-vault/general/overview
+https://docs.microsoft.com/en-us/azure/key-vault/certificates/about-certificates
+https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-pki-certs?view=azs-2008
+https://docs.microsoft.com/en-us/azure-stack/operator/azure-stack-validate-registration?view=azs-2008&tabs=az
+
+#>
+
 param (
     [parameter(Mandatory = $true)] [string]$TenantId,
     [parameter(Mandatory = $true)] [string]$SubId,
@@ -9,6 +92,8 @@ param (
     [parameter(Mandatory = $false)] [string]$AzLocation
     
 )
+#
+
 
 ###Elevating PowerShell sesson
 
@@ -328,14 +413,15 @@ While ($Stoploop -eq $false)
 
 # Setting Access Policy for current users
 $Upn = (Get-AzContext).Account.Id
-$TeamSG = (Get-AzADGroup -DisplayName 'CEC Azure Stack Engineering').Id
+#$TeamSGName =  ''
+#$TeamSG = (Get-AzADGroup -DisplayName $TeamSgName).Id
 [string]$date = (Get-Date)
 $output = " - Setting Azure Key Vault Access Policy"
 $msg = $date + $output
 Write-Output $msg
 
 Set-AzKeyVaultAccessPolicy -VaultName $KeyVaultName -UserPrincipalName $Upn -PermissionsToSecrets get, list, set -PermissionsToCertificates get, list, create, update, getissuers, setissuers, listissuers
-Set-AzKeyVaultAccessPolicy -VaultName $KeyVaultName -ObjectId $TeamSG -PermissionsToSecrets get, list, set -PermissionsToCertificates get, list, create, update, getissuers, setissuers, listissuers
+#Set-AzKeyVaultAccessPolicy -VaultName $KeyVaultName -ObjectId $TeamSG -PermissionsToSecrets get, list, set -PermissionsToCertificates get, list, create, update, getissuers, setissuers, listissuers
 
 # Creating Secrets.
 
