@@ -122,7 +122,7 @@ param (
 
 $RegionName = $RegionName.ToLower()
 $externalFQDN = $externalFQDN.ToLower()
-$global:KeyVaultName = $KeyVaultName.ToLower()
+$KeyVaultName = $KeyVaultName.ToLower()
 if ('0' -eq $AzLocation.Length) { $AzLocation = 'eastus2' }
 
 ## Login and set session to the Azure subscription you are working in
@@ -351,7 +351,7 @@ else {
     $c = $a + $b
     [array] $array = $c -Split ('\.')
     $arrcount = ($array.Count) - 2
-    $global:KeyVaultName = $array[0..$arrcount] -join ""
+    $KeyVaultName = $array[0..$arrcount] -join ""
     
     if ($KeyVaultName.Length -gt 24) {
     
