@@ -125,7 +125,7 @@ foreach ($AzsCertName in $AzsCertList) {
 $output = " - Checking the Azure Key Vault '$KeyVaultName' for the PFX password."
 $msg = $date + $output
 Write-Output $msg
-$SecretName = 'PFX-' + $KeyVaultName
+$SecretName = 'PFX'
 $pfxpasswordcheck = (Get-AzKeyVaultSecret -VaultName $KeyVaultName -Name $SecretName -ErrorAction  SilentlyContinue ).secretvalue
 
 if ($null -ne $pfxpasswordcheck) {
@@ -171,8 +171,8 @@ if ($null -ne $pfxpasswordcheck) {
 $a = Read-Host -Prompt "Do you want to proceed with the Azure Stack Certificate Validation?  Y/N"
 
 if ($a -in ('Y', 'y', 'Yes', 'yes')) {
-    if ($null -eq $externalFQDN) { $externalFQDN = Read-Host -Prompt "Please provide the Azure Stack External FQDN" }
-    if ($null -eq $RegionName) { $RegionName = Read-Host -Prompt "Please provide the Azure Stack Region Name" }
+    $externalFQDN = Read-Host -Prompt "Please provide the Azure Stack External FQDN" 
+    $RegionName = Read-Host -Prompt "Please provide the Azure Stack Region Name" 
     Invoke-AzsCertificateValidation -CertificateType deployment -CertificatePath $AzsCertDeploymentPath -ExternalFQDN $externalFQDN -RegionName $RegionName -IdentitySystem AAD -pfxPassword $pfxpassword
 
 }
