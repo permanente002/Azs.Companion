@@ -452,6 +452,7 @@ While ($Stoploop -eq $false)
 
 # Setting Access Policy for current users
 $Upn = (Get-AzContext).Account.Id
+
 [string]$date = (Get-Date)
 $output = " - Setting Azure Key Vault Access Policy for $Upn."
 $msg = $date + $output
@@ -481,6 +482,7 @@ if ($null -ne $UserAccessPolicy){
         $msg = $date + $output
         Write-Output $msg
     }
+
 
 }
 
@@ -514,7 +516,8 @@ if ($null -ne $AccessPolicy){
 
 }
 
-#Set-AzKeyVaultAccessPolicy -VaultName $KeyVaultName -ObjectId $TeamSG -PermissionsToSecrets get, list, set -PermissionsToCertificates get, list, create, update, getissuers, setissuers, listissuers
+
+Set-AzKeyVaultAccessPolicy -VaultName $KeyVaultName -UserPrincipalName $Upn -PermissionsToSecrets get, list, set -PermissionsToCertificates get, list, create, update, getissuers, setissuers, listissuers
 
 # Creating Secrets.
 

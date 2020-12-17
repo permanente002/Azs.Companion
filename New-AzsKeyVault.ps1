@@ -491,11 +491,11 @@ if ($null -ne $AccessPolicy){
         
     }
 
+
 }
 
-#Set-AzKeyVaultAccessPolicy -VaultName $KeyVaultName -ObjectId $TeamSG -PermissionsToSecrets get, list, set -PermissionsToCertificates get, list, create, update, getissuers, setissuers, listissuers
+Set-AzKeyVaultAccessPolicy -VaultName $KeyVaultName -UserPrincipalName $Upn -PermissionsToSecrets get, list, set -PermissionsToCertificates get, list, create, update, getissuers, setissuers, listissuers
 
-# Creating Secrets.
 
 $AccountList = @('BMC', 'PFX', 'PEP', 'OEMVM','HLH')
 
@@ -536,4 +536,7 @@ Foreach ($Account in $AccountList) {
         $output = " - New Azure Key Vault Task - Finished"
         $msg = $date + $output
         write-output $msg
+
+
+###NEED TO PROMPT FOR CA ISSUER Setup
 
