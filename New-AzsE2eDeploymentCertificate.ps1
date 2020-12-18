@@ -709,7 +709,7 @@ foreach ($AzsCert in $AzsCertList) {
         $CertSubjectName = "CN=" + "$AzsCert" + "." + "$RegionName" + "." + "$externalFQDN"
         $CertAltName = "$AzsCert" + "." + "$RegionName" + "." + "$externalFQDN"
 
-        Set-AzKeyVaultCertificateIssuer -VaultName $KeyVaultName -IssuerProvider $providerName -Name $issuerName -Verbose
+        Set-AzKeyVaultCertificateIssuer -VaultName $KeyVaultName -IssuerProvider $issuerName -Name $issuerName -Verbose
         $policy = New-AzKeyVaultCertificatePolicy `
             -SubjectName $CertSubjectName `
             -IssuerName $issuerName `
@@ -723,7 +723,7 @@ foreach ($AzsCert in $AzsCertList) {
         $CertSubjectName = "CN=" + "$AzsCert" + "." + "$RegionName" + "." + "$externalFQDN"
         $CertAltName = "$AzsCert" + "." + "$RegionName" + "." + "$externalFQDN"
 
-        Set-AzKeyVaultCertificateIssuer -VaultName $KeyVaultName -IssuerProvider $providerName -Name $issuerName
+        Set-AzKeyVaultCertificateIssuer -VaultName $KeyVaultName -IssuerProvider $issuerName -Name $issuerName
         $policy = New-AzKeyVaultCertificatePolicy `
             -SubjectName $CertSubjectName `
             -IssuerName $issuerName `
